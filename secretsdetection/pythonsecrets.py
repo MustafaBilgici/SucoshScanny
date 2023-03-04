@@ -1,10 +1,10 @@
 import os
 import re
+import json
 
 def secrets_scan_files(directory, keywords_file):
-
+    results = {}
     with open(keywords_file, 'r') as f:
-        print(f)
         keywords = [line.strip() for line in f.readlines()]
         keywords2=[]
         for key in keywords:
@@ -13,7 +13,6 @@ def secrets_scan_files(directory, keywords_file):
 
     for root, dirs, files in os.walk(directory):
         for file in files:
-
             if file.endswith(".py"):
                 file_path = os.path.join(root, file)
                 with open(file_path, 'r') as f:
@@ -21,6 +20,6 @@ def secrets_scan_files(directory, keywords_file):
 
                 matches = re.findall("|".join(keywords2), contents)
                 if matches:
-                    print(f"Found matches in {file_path}: {matches}")
-#base64 code check
-
+                    results[file_path] = matches
+    
+    print(json.dumps(results))

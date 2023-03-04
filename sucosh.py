@@ -44,29 +44,32 @@ number = 0
 user_data = getuserinput()
 path = user_data.path
 
+print(scan_directory_csrf(path))
 
-
-
-
-
-scan_directory_csrf(path)
 scan_directory_lfi(path)
 scan_directory_rce(path)
-scan_directory_for_python_files(path)
+print(scan_directory_for_python_files(path))
 
-ssrf_files = detect_ssrf(path)
-if len(ssrf_files) > 0:
-    print("POTENTIAL SSRF VULNERABILITY DETECTED")
-    for ssrf_file in ssrf_files:
-        print("File: ", ssrf_file['file'])
-        print("Input Functions: ", ssrf_file['input_functions'])
-        print("SSRF Functions: ", ssrf_file['ssrf_functions'])
-else:
-    print("No SSRF vulnerability detected.")
+# ssrf_files = detect_ssrf(path)
+# if len(ssrf_files) > 0:
+#     print("POTENTIAL SSRF VULNERABILITY DETECTED")
+#     for ssrf_file in ssrf_files:
+#         print("File: ", ssrf_file['file'])
+#         print("Input Functions: ", ssrf_file['input_functions'])
+#         print("SSRF Functions: ", ssrf_file['ssrf_functions'])
+# else:
+#     print("No SSRF vulnerability detected.")
 
-for file_path in find_files_to_check(path):
-    check_for_ssti(file_path)
-check_xss_vulnerability_in_directory(path)
+result = detect_ssrf(path)
+print(result)
+
+# for file_path in find_files_to_check(path):
+#     check_for_ssti(file_path)
+
+main_ssti(path)
+
+results = check_xss_vulnerability_in_directory(path)
+print(json.dumps(results, indent=4))
 
 
 
