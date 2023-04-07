@@ -1,84 +1,96 @@
-from pythonscan.csrf import *
-from pythonscan.lfi import *
-from pythonscan.rce import *
-from pythonscan.sqli import *
-from pythonscan.ssrf import *
-from pythonscan.ssti import *
-from pythonscan.xss import *
-from nodejscan.lfi import *
-from nodejscan.rce import *
-from nodejscan.sqli import *
-from nodejscan.ssrf import *
-from nodejscan.ssti import *
-from nodejscan.xss import *
-from secretsdetection.pythonsecrets import *
-import pyfiglet
-from termcolor import colored
-from pythonscan.scanpath import scanpath
-import optparse
+# Normal Detection output without Json
+# import os
+# import re
 
+# def scan_file(file_path):
+#     with open(file_path, 'r') as f:
+#         contents = f.read()
 
-keywords_file="/Users/bilgici/Desktop/SucoshScan/secretsdetection/secrets.txt"
-banner = pyfiglet.figlet_format("SucoshScan", font="slant")
-colored_banner = colored(banner, color="green")
-author = "MustafaBilgici&AnduriCaser"
+#     if re.search(r'request\.(POST|GET)\.(get|post)', contents):
+#         if re.search(r'eval\(', contents) or re.search(r'exec\(', contents) or re.search(r'pickle.loads\(', contents) or re.search(r'yaml.load\(', contents) or re.search(r'paramiko.exec_command\(', contents) or re.search(r'SSHClient.invoke_shell\(', contents) or re.search(r'shell=True\(', contents):
+#             print('Potential RCE vulnerability found in {}'.format(file_path))
+#             rce_vuln_lines = []
+#             lines = contents.split('\n')
+#             for i, line in enumerate(lines):
+#                 if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
+#                     rce_vuln_lines.append(i+1)
+#             if rce_vuln_lines:
+#                 print('Vulnerable lines:', rce_vuln_lines)
+#         else:
+#             print('Input tracking found in {}'.format(file_path))
+#     else:
+#         if re.search(r'eval\(', contents) or re.search(r'exec\(', contents) or re.search(r'pickle.loads\(', contents) or re.search(r'yaml.load\(', contents) or re.search(r'paramiko.exec_command\(', contents) or re.search(r'SSHClient.invoke_shell\(', contents) or re.search(r'shell=True\(', contents):
+#             print('Potential RCE vulnerability found in {}'.format(file_path))
+#             rce_vuln_lines = []
+#             lines = contents.split('\n')
+#             for i, line in enumerate(lines):
+#                 if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
+#                     rce_vuln_lines.append(i+1)
+#             if rce_vuln_lines:
+#                 print('Vulnerable lines:', rce_vuln_lines)
+#         else:
+#             print('Input tracking found in {}'.format(file_path))
 
-print(colored_banner)
-print(f"\n\tBy {author}")
-print(f"\n\t")
-
-def getuserinput():
-
-    parse_object = optparse.OptionParser()
-    parse_object.add_option("-p", "--path",dest="path",help="Enter Source Code Path")
-
-    options = parse_object.parse_args()[0]
-
-    if not options.path:
-        print("Enter Source Code Path")
-
-
-    return options
-number = 0
-
-user_data = getuserinput()
-path = user_data.path
-
-print(scan_directory_csrf(path))
-
-scan_directory_lfi(path)
-scan_directory_rce(path)
-print(scan_directory_for_python_files(path))
-
-# ssrf_files = detect_ssrf(path)
-# if len(ssrf_files) > 0:
-#     print("POTENTIAL SSRF VULNERABILITY DETECTED")
-#     for ssrf_file in ssrf_files:
-#         print("File: ", ssrf_file['file'])
-#         print("Input Functions: ", ssrf_file['input_functions'])
-#         print("SSRF Functions: ", ssrf_file['ssrf_functions'])
-# else:
-#     print("No SSRF vulnerability detected.")
-
-result = detect_ssrf(path)
-print(result)
-
-# for file_path in find_files_to_check(path):
-#     check_for_ssti(file_path)
-
-main_ssti(path)
-
-results = check_xss_vulnerability_in_directory(path)
-print(json.dumps(results, indent=4))
+# def scan_directory_rce(path):
+#     for root, dirs, files in os.walk(path):
+#         for file in files:
+#             if file.endswith('.py'):
+#                 full_path = os.path.join(root, file)
+#                 scan_file(full_path)
 
 
 
+import os
+import re
+import json
 
-scan_directory_for_rce(path)
-scan_node_files_lfi(path)
-scan_node_js_files(path)
+def scan_file(file_path):
+    with open(file_path, 'r',encoding = "ISO-8859-1") as f:
+        contents = f.read()
+    result = {}
 
-scan_directory_ssrf(path)
-nodejs_ssti_scan(path)
-check_directory_for_xss_vulnerabilities(path)
-secrets_scan_files(path,keywords_file)
+    if re.search(r'request\.(POST|GET)\.(get|post)', contents):
+        if re.search(r'eval\(', contents) or re.search(r'exec\(', contents) or re.search(r'pickle.loads\(', contents) or re.search(r'yaml.load\(', contents) or re.search(r'paramiko.exec_command\(', contents) or re.search(r'SSHClient.invoke_shell\(', contents) or re.search(r'shell=True\(', contents):
+            result['status'] = 'Vulnerable'
+            rce_vuln_lines = []
+            lines = contents.split('\n')
+            for i, line in enumerate(lines):
+                if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
+                    rce_vuln_lines.append(i+1)
+            if rce_vuln_lines:
+                result['file_path'] = file_path
+                result['vulnerable_lines'] = rce_vuln_lines
+        else:
+            pass
+    else:
+        if re.search(r'eval\(', contents) or re.search(r'exec\(', contents) or re.search(r'pickle.loads\(', contents) or re.search(r'yaml.load\(', contents) or re.search(r'paramiko.exec_command\(', contents) or re.search(r'SSHClient.invoke_shell\(', contents) or re.search(r'shell=True\(', contents):
+            result['status'] = 'Potential RCE vulnerability found'
+            rce_vuln_lines = []
+            lines = contents.split('\n')
+            for i, line in enumerate(lines):
+                if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
+                    rce_vuln_lines.append(i+1)
+            if rce_vuln_lines:
+                result['file_path'] = file_path
+                result['vulnerable_lines'] = rce_vuln_lines
+        else:
+            pass
+
+    # result['file_path'] = file_path
+
+    return result
+
+def scan_directory_rce(path):
+    results = []
+
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file.endswith('.py'):
+                full_path = os.path.join(root, file)
+                result = scan_file(full_path)
+                results.append(result)
+
+    output = json.dumps(results, indent=4)
+    print(output)
+
+scan_directory_rce('/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/')

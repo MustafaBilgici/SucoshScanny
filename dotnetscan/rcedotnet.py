@@ -4,13 +4,8 @@ import re
 
 rce_functions = ['Process\.Start\(', 'Reflection\.', 'unsafe', 'Serialization\.']
 input_functions = ['Console\.ReadLine\(', 'System\.Console\.ReadLine\(']
-
 file_extensions = ['.cs', '.cshtml', '.vb', '.aspx', '.ascx', '.asmx']
-
-
 inputs = []
-
-
 def search_files(path):
     for dirpath, dirs, files in os.walk(path):
         for file_name in files:
