@@ -1,78 +1,22 @@
-# Normal Detection output without Json
-# import os
-# import re
-
-# def check_xss_vulnerability(python_file_path):
-#     with open(python_file_path) as f:
-#         python_code = f.read()
-
-#     get_pattern = re.compile(r"get\(.*\)")
-#     render_pattern = re.compile(r"render_template\(.*\)")
-#     response_pattern = re.compile(r"response\(.*\)")
-#     cookie_pattern = re.compile(r"set_cookie\(.*\)")
-#     url_pattern = re.compile(r"redirect\(.*\)")
-#     input_pattern = re.compile(r"request\.get\(.*\)|request\.post\(.*\)")
-
-#     matches = get_pattern.findall(python_code) + render_pattern.findall(python_code) + response_pattern.findall(python_code) + cookie_pattern.findall(python_code) + url_pattern.findall(python_code) + input_pattern.findall(python_code)
-
-#     for match in matches:
-#         if "html" in match or "HTML" in match or "input" in match or "value" in match or "redirect" in match:
-#             print("Potential XSS vulnerability detected in " + python_file_path + ": " + match)
-
-#     if not matches:
-#         print("No XSS vulnerabilities detected in " + python_file_path)
-
-# def check_xss_vulnerability_in_directory(path):
-#     for root, dirs, files in os.walk(path):
-#         for file in files:
-#             if file.endswith(".py"):
-#                 check_xss_vulnerability(os.path.join(root, file))
-
-
-
 import os
 import re
 import json
+def read_html_files(path):
+   
+    html_files = []
+    for filename in os.listdir(path):
+        if filename.endswith(".html"):
+            file_path = os.path.join(path, filename)
+            with open(file_path, "r", encoding="utf-8") as file:
+                file_content = file.read()
+                html_files.append(file_content)
+    return html_files
 
-def check_xss_vulnerability(python_file_path):
-    with open(python_file_path) as f:
-        python_code = f.read()
-
-    get_pattern = re.compile(r"get\(.*\)")
-    render_pattern = re.compile(r"render_template\(.*\)")
-    response_pattern = re.compile(r"response\(.*\)")
-    cookie_pattern = re.compile(r"set_cookie\(.*\)")
-    url_pattern = re.compile(r"redirect\(.*\)")
-    input_pattern = re.compile(r"request\.get\(.*\)|request\.post\(.*\)")
-
-    matches = get_pattern.findall(python_code) + render_pattern.findall(python_code) + response_pattern.findall(python_code) + cookie_pattern.findall(python_code) + url_pattern.findall(python_code) + input_pattern.findall(python_code)
-
-    results = []
-    for match in matches:
-        if "html" in match or "HTML" in match or "input" in match or "value" in match or "redirect" in match:
-            result = {
-                "vulnerability": "Potential XSS vulnerability detected",
-                "file_path": python_file_path,
-                "match": match
-            }
-            results.append(result)
-
-    if not results:
-        result = {
-            "vulnerability": "No XSS vulnerabilities detected",
-            "file_path": python_file_path
-        }
-        results.append(result)
+def check_xss_vulnerability_in_directory(html_files):
     
-    return results
-
-def check_xss_vulnerability_in_directory(path):
-    results = []
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            if file.endswith(".py"):
-                result = check_xss_vulnerability(os.path.join(root, file))
-                results.extend(result)
-    return results
-
-
+    xss_vulnerabilities = []
+    for file_content in html_files:
+        matches = re.findall("<[^\s<>]*[^\s<>]*(?:\s\w+=(?:(?:\"[^\"]*\")|(?:\'[^\']*\')|[^\"\'>\s]*))*[^\s<>]*\s*(?:(?:\/>)|(?:>[\s\S]*?<\/[^\s<>]*\s*>))|[\s\S]*?(?:(?<=\=)[\'\"]\+[^\"\'>]*?(\+|%2[Bb]){2}[^\S]*?\w*\([^\S]*?[\'\"]\)|(?<=\=)[\'\"][^\"\'>]*?javascript:[^\"\'>]*?((?:(?:\%25)|%)[\dA-Fa-f]{2}){2}[\S]*?)([\"\'][^\"\'>]*?)(?:javascript:\S*?)?['\"]", file_content)
+        if matches:
+            xss_vulnerabilities.append({'matches':matches})
+    return json.dumps(xss_vulnerabilities)

@@ -67,4 +67,3 @@ def scan_directory_for_python_files(path):
     print(json.dumps(results, indent=2))
 
 
-scan_directory_for_python_files(".")  # "." geçerli dizin için kullanılır.

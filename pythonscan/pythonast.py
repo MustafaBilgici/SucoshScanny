@@ -4,7 +4,7 @@ import re
 class SqlQueryVisitor(ast.NodeVisitor):
     def __init__(self):
         self.has_injection = False
-
+        
     def visit_BinOp(self, node):
         if isinstance(node.op, ast.BitOr):
             if isinstance(node.right, ast.Str) and re.search(r"(--|\"|')", node.right.s):
