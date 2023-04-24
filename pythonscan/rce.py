@@ -39,7 +39,6 @@
 #                 scan_file(full_path)
 
 
-
 import os
 import re
 import json
@@ -91,4 +90,3 @@ def scan_directory_rce(path):
 
     output = json.dumps(results, indent=4)
     print(output)
-

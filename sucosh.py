@@ -69,4 +69,4 @@ print(json.dumps(results, indent=4))
 
 # scan_directory_ssrf(path)
 # nodejs_ssti_scan(path)
-# secrets_scan_files(path,keywords_file)
+secrets_scan_files(path,keywords_file)
