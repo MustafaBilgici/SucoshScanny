@@ -2,15 +2,15 @@ import os
 import re
 
 def scan_django_projects(directory):
-
+    # bütün dizinleri gez
     directories = [d for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
-    
+
     for d in directories:
 
         if re.match(r'^[a-zA-Z0-9_-]+$', d):
             project_path = os.path.join(directory, d)
             
-
+            #settings.py dosyasını bul
             settings_file = os.path.join(project_path, 'settings.py')
             if os.path.isfile(settings_file):
 
