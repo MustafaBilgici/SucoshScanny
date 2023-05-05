@@ -6,7 +6,7 @@ def find_files_to_check(path):
     tpl_files = []
     for dirpath, dirnames, filenames in os.walk(path):
         for filename in filenames:
-            if filename.endswith(".tpl") or filename.endswith(".twig"):
+            if filename.endswith(".php"):
                 tpl_files.append(os.path.join(dirpath, filename))
     return tpl_files
 
