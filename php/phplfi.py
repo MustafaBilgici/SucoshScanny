@@ -41,4 +41,3 @@ def scan_directory_lfi(path):
 
     output = json.dumps(results, indent=4)
     print(output)
-
