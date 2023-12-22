@@ -21,5 +21,5 @@ def secrets_scan_files(directory, keywords_file):
                 matches = re.findall("|".join(keywords2), contents)
                 if matches:
                     results[file_path] = matches
-    
+
     print(json.dumps(results))
