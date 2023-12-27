@@ -16,6 +16,9 @@ import pyfiglet
 from termcolor import colored
 from pythonscan.scanpath import scanpath
 import optparse
+from php.phplfi import *
+from php.phprce import *
+from php.phpssti import *
 
 
 keywords_file="/Users/bilgici/Desktop/SucoshScan/secretsdetection/secrets.txt"
@@ -50,7 +53,9 @@ scan_directory_lfi(path)
 scan_directory_rce(path)
 print(scan_directory_for_python_files(path))
 
-
+php_scan_directory_rce(path)
+php_scan_directory_lfi(path)
+find_files_to_check(path)
 result = detect_ssrf(path)
 print(result)
 

@@ -27,7 +27,7 @@ def scan_file(file_path):
 
     return result
 
-def scan_directory_rce(path):
+def php_scan_directory_rce(path):
     results = []
 
     for root, dirs, files in os.walk(path):
