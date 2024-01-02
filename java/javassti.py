@@ -33,6 +33,7 @@ def main_ssti(path):
     for file in files_to_check:
         result = check_for_ssti(file)
         results.append(result)
+    output=json.dumps(results, indent=4)
     print(json.dumps(results, indent=4))
-
-main_ssti(".") # "." dizini ve alt dizinlerinde arama yapar.
+    return output
+main_ssti(".")

@@ -19,7 +19,7 @@ import optparse
 from php.phplfi import *
 from php.phprce import *
 from php.phpssti import *
-
+from java.javarce import *
 
 keywords_file="/Users/bilgici/Desktop/SucoshScan/secretsdetection/secrets.txt"
 banner = pyfiglet.figlet_format("SucoshScan", font="slant")
@@ -63,7 +63,7 @@ print(result)
 #     check_for_ssti(file_path)
 
 main_ssti(path)
-
+check_for_ssti(path)
 results = check_xss_vulnerability_in_directory(path)
 print(json.dumps(results, indent=4))
 
@@ -74,4 +74,7 @@ print(json.dumps(results, indent=4))
 
 # scan_directory_ssrf(path)
 # nodejs_ssti_scan(path)
+
 secrets_scan_files(path,keywords_file)
+
+scan_directory_rce_java(path)

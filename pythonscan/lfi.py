@@ -69,4 +69,3 @@ def scan_directory_lfi(path):
                 result = find_input_taint_and_lfi(file_path)
                 results.append(result)
     return json.dumps(results)
-
