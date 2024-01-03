@@ -30,7 +30,10 @@ def check_sql_injection_vulnerability(code, filename):
     if vulnerabilities:
         return {
             "filename": filename,
-            "vulnerabilities": vulnerabilities
+            "vulnerabilities": vulnerabilities,
+            "line_number":i,
+            "severity": "high"
+            
         }
     else:
         return None

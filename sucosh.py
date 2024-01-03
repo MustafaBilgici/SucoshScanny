@@ -63,7 +63,7 @@ print(result)
 #     check_for_ssti(file_path)
 
 main_ssti(path)
-check_for_ssti(path)
+
 results = check_xss_vulnerability_in_directory(path)
 print(json.dumps(results, indent=4))
 
@@ -75,6 +75,6 @@ print(json.dumps(results, indent=4))
 # scan_directory_ssrf(path)
 # nodejs_ssti_scan(path)
 
-secrets_scan_files(path,keywords_file)
+# secrets_scan_files(path,keywords_file)
 
 scan_directory_rce_java(path)

@@ -9,24 +9,24 @@ def scan_file(file_path):
     result = {}
 
     if re.search(r'request\.(POST|GET)\.(get|post)', contents):
-        if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', contents):
+        if re.search(r'eval\(|exec\(|pickle.loads\(|unsafe_load\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', contents):
             result['status'] = 'Vulnerable'
             rce_vuln_lines = []
             lines = contents.split('\n')
             for i, line in enumerate(lines):
-                if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
+                if re.search(r'eval\(|unsafe_load\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
                     rce_vuln_lines.append({'line_number': i+1, 'code': line})
             if rce_vuln_lines:
                 result['vulnerable_lines'] = rce_vuln_lines
         else:
             result['status'] = 'Input tracking found'
     else:
-        if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', contents):
+        if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|unsafe_load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', contents):
             result['status'] = 'Potential RCE vulnerability found'
             rce_vuln_lines = []
             lines = contents.split('\n')
             for i, line in enumerate(lines):
-                if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
+                if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|unsafe_load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', line):
                     rce_vuln_lines.append({'line_number': i+1, 'code': line})
             if rce_vuln_lines:
                 result['vulnerable_lines'] = rce_vuln_lines
