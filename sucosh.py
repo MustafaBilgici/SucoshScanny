@@ -51,7 +51,7 @@ print(scan_directory_csrf(path))
 
 scan_directory_lfi(path)
 scan_directory_rce(path)
-print(scan_directory_for_python_files(path))
+# print(scan_directory_for_python_files(path))
 
 php_scan_directory_rce(path)
 php_scan_directory_lfi(path)

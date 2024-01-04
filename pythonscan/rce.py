@@ -19,7 +19,7 @@ def scan_file(file_path):
             if rce_vuln_lines:
                 result['vulnerable_lines'] = rce_vuln_lines
         else:
-            result['status'] = 'Input tracking found'
+            print("ok")
     else:
         if re.search(r'eval\(|exec\(|pickle.loads\(|yaml.load\(|unsafe_load\(|paramiko.exec_command\(|SSHClient.invoke_shell\(|shell=True\(', contents):
             result['status'] = 'Potential RCE vulnerability found'
@@ -31,7 +31,7 @@ def scan_file(file_path):
             if rce_vuln_lines:
                 result['vulnerable_lines'] = rce_vuln_lines
         else:
-            result['status'] = 'Input tracking found'
+            print("ok")
 
     result['file_path'] = file_path
 
