@@ -54,11 +54,9 @@ def find_input_taint_and_lfi(file_path):
             result = {'status': 'LFI POTENTIAL', 'file_path': file_path}
             print(json.dumps(result))
         elif input_taint:
-            result = {'status': 'POTENTIAL INPUT TAINT', 'file_path': file_path}
-            print(json.dumps(result))
+            print("ok")
         else:
-            result = {'status': 'OK', 'file_path': file_path}
-            print(json.dumps(result))
+            print("OK")
 
 def scan_directory_lfi(path):
     results = []
