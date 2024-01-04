@@ -4,6 +4,7 @@ import json
 
 def check_sql_injection_vulnerability(code, filename):
     select_pattern = re.compile(r"SELECT\s.+?\sFROM\s.+?\sWHERE\s.+\s=\s.+\s")
+    # select_pattern=re.compile(r"SELECT\s+\*\s+FROM\s+users\s+WHERE\s+useragent\s*=\s*'(.+?)'\s*")
     insert_pattern = re.compile(r"INSERT\sINTO\s.+?\sVALUES\s?\(.+?\)")
     update_pattern = re.compile(r"UPDATE\s.+?\sSET\s.+\s=\s.+\sWHERE\s.+\s=\s.+\s")
     delete_pattern = re.compile(r"DELETE\sFROM\s.+?\sWHERE\s.+\s=\s.+\s")
@@ -17,10 +18,14 @@ def check_sql_injection_vulnerability(code, filename):
 
     vulnerabilities = []
     lines = code.split("\n")
+    
     for i, line in enumerate(lines, start=1):
+        
         for match in matches:
-            if "request.get(" in match or "request.post(" in match:
+            
+
                 if match in line:
+                    print("****************************************************")
                     vulnerabilities.append({
                         "line_number": i,
                         "line_content": line.strip(),
@@ -31,13 +36,9 @@ def check_sql_injection_vulnerability(code, filename):
         return {
             "filename": filename,
             "vulnerabilities": vulnerabilities,
-            "line_number":i,
-            "severity": "high"
-            
         }
     else:
         return None
-
 
 def scan_directory_for_python_files(path):
     results = []
@@ -49,6 +50,6 @@ def scan_directory_for_python_files(path):
                     result = check_sql_injection_vulnerability(code, file)
                     if result:
                         results.append(result)
-    output=json.dumps(results, indent=2)
+    output = json.dumps(results, indent=2)
     print(output)
     return output
