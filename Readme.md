@@ -2,7 +2,6 @@
 "Sucosh" is an automated Source Code vulnerability scanner(SAST) and assessment framework for Python(Flask-Django) & NodeJs capable of performing code review in Web Application Developing or Source Code Analysis processes.It’s can detect a lot of vulnerability(RCE,SSTI,Insecure Deserilisation,SSRF,SQLI,CSRF etc.) in given source code.For now, only the detection modules of python(flask,django) and nodejs(express js.) languages are finished. In the future, specific detection functions will be written for php (Laravel, Codeigniter), .NET, Go and other languages.
 
 
-![Örnek Resim](https://avatars.githubusercontent.com/u/48925906?s=400&u=203396b839c7667149f0fc5cb90afee983bad592&v=4)
 
 
 
